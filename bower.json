@@ -1,0 +1,9 @@
+{
+  "name": "webutilz-signature",
+  "version": "0.0.0",
+  "homepage": "https://github.com/webutilz/signature",
+  "authors": [
+    "Lalit Tanwar <lalit.tanwar07@gmail.com>"
+  ],
+  "license": "MIT"
+}
