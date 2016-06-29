@@ -10,11 +10,15 @@
     <link rel="stylesheet" href="css/jquery.Jcrop.css"/>
     <style>
         #cropper {
-            width: 300px;
-            height: 350px;
-            position:relative; /* or fixed or absolute */
-            background-color: #FFF;
-            border: #000 1px solid;
+            float: left;
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            margin-right: 5px;
+            background-image: url('images/UploadLight.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            width: 405px; height: 200px;
         }
     </style>
 </head>
@@ -22,12 +26,9 @@
 <button id="clean">clear white</button>
 <button id="rt-left">Left</button><button id="rt-right">Right</button>
 <form id="form1" runat="server">
-    <input type='file' id="imgInp"/><input id="factor" type='text' value="0.9"/>
-    <input id="brb" type='text' value="4"/>
     <div id="cropper"></div>
-    <br/>
-    <hr/>
 </form>
+
 
 <script>
     $(document).ready(function(){
