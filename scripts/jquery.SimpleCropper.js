@@ -27,8 +27,7 @@
         var deg2Rad = Math.PI / 180;
         var bottom_html = "<input type='file' id='fileInput' name='files[]'/ accept='image/*'>" +
             "<canvas id='myCanvas' style='display:none;'></canvas><div id='modal'></div><div id='preview'>" +
-            "<div class='buttons'><div class='rotate-left'>left</div><div class='rotate-right'>right</div>" +
-            "<div class='cancel'></div><div class='ok'></div></div></div>";
+            "<div class='buttons'><div class='cancel'></div><div class='ok'></div></div></div>";
         $('body').append(bottom_html);
 
         //add click to element
