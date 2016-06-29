@@ -209,7 +209,10 @@
                 }
                 this.method = method;
             },
-            clear: function() {
+            clear : function(){
+                return this.clear2();
+            },
+            clear1 : function() {
                 this.checkOriginal(0);
                 $img = $self.find('img');
                 $img[0].src = white2transparent($img[0], 1);
