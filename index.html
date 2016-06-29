@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OLP</title>
+    <script src="scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.Jcrop.js"></script>
+    <script type="text/javascript" src="scripts/jquery.SimpleCropper.js"></script>
+    <script type="text/javascript" src="signature.js"></script>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/jquery.Jcrop.css"/>
+    <style>
+        #cropper {
+            width: 300px;
+            height: 350px;
+            position:relative; /* or fixed or absolute */
+            background-color: #FFF;
+            border: #000 1px solid;
+        }
+    </style>
+</head>
+<body style="color: #FFFEFB">
+<button id="clean">clear white</button>
+<button id="rt-left">Left</button><button id="rt-right">Right</button>
+<form id="form1" runat="server">
+    <input type='file' id="imgInp"/><input id="factor" type='text' value="0.9"/>
+    <input id="brb" type='text' value="4"/>
+    <div id="cropper"></div>
+    <br/>
+    <hr/>
+</form>
+
+<script>
+    $(document).ready(function(){
+        var sigImage = signature($('#cropper'));
+        $('#clean').click(function() {
+            sigImage.clear();
+        });
+        $('#rt-left').click(function() {
+            sigImage.rotate(20);
+        })
+        $('#rt-right').click(function() {
+            sigImage.rotate(-20);
+        })
+    });
+</script>
+</body>
+
+</html>
+
