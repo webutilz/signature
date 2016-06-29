@@ -65,11 +65,13 @@
             });
 
             $('.rotate-left').click(function () {
-               console.error("rotate-left")
+               console.error("rotate-left");
+                rotate();
             });
 
             $('.rotate-right').click(function () {
-                console.error("rotate-right")
+                console.error("rotate-right");
+                rotate();
             });
         });
 
@@ -88,6 +90,26 @@
             file_display_area = null;
         }
 
+        function rotate(){
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext('2d');
+            var w = current_image.width, h = current_image.height;
+            console.error(current_image,w,h);
+            canvas.width = w;
+            canvas.height = h;
+            context.width = w;
+            context.height = h;
+            var cx = w / 2;
+            var cy = h / 2;
+            context.clearRect(0, 0, w, h);
+            context.fillStyle = "rgba(216,216,150,1.0)";
+            context.translate(cx, cy);
+            context.rotate(10 * deg2Rad);
+            //context.translate(0, 0);
+            context.drawImage(current_image, -cx,-cy,w,h);
+            current_image.src = canvas.toDataURL('image/png');
+            console.error(current_image,-w,-h);
+        }
         function imageUpload(dropbox) {
             var file = $("#fileInput").get(0).files[0];
 
@@ -99,6 +121,7 @@
 
                 reader.onload = function (e) {
                     // Clear the current image.
+                    console.error("reader.onload")
                     $('#photo').remove();
 
                     original_data = reader.result;
@@ -110,6 +133,7 @@
                     current_image.style['maxWidth'] = image_dimension_x + 'px';
                     current_image.style['maxHeight'] = image_dimension_y + 'px';
                     current_image.onload = function () {
+                        console.error("current_image.onload")
                         // Calculate scaled image dimensions
                         if (current_image.width > image_dimension_x || current_image.height > image_dimension_y) {
                             if (current_image.width > current_image.height) {
@@ -120,12 +144,11 @@
                                 scaled_height = image_dimension_y;
                                 scaled_width = image_dimension_y * current_image.width / current_image.height;
                             }
-                            if (current_image.width == current_image.height) {
+                            if (current_image.width === current_image.height) {
                                 scaled_width = image_dimension_x;
                                 scaled_height = image_dimension_y;
                             }
-                        }
-                        else {
+                        } else {
                             scaled_width = current_image.width;
                             scaled_height = current_image.height;
                         }
@@ -166,7 +189,7 @@
                             onSelect: showCoords,
                             onChange: showCoords,
                             bgColor: '#747474',
-                            bgOpacity: .4,
+                            bgOpacity: 0.4,
                             aspectRatio: aspX / aspY,
                             setSelect: [0, 0, selection_width, selection_height]
                         }, function () {
@@ -175,6 +198,7 @@
                     }
 
                     // Add image to dropbox element
+                    console.error("current_image",current_image)
                     dropbox.appendChild(current_image);
                 }
 

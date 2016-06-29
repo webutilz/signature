@@ -18,7 +18,7 @@
             background-position: center center;
             background-repeat: no-repeat;
             cursor: pointer;
-            width: 405px; height: 200px;
+            width: 400px; height: 200px;
         }
     </style>
 </head>
@@ -26,12 +26,12 @@
 <pre>
      "webutilz-signature": "latest"
 </pre>
-<button id="clean">clear white</button>
+<button id="clean">Clear 1</button><button id="clean2">Clean 2</button>
+<button id="clean3">Clean 3</button>
 <button id="rt-left">Left</button><button id="rt-right">Right</button>
 <form id="form1" runat="server">
     <div id="cropper"></div>
 </form>
-
 
 <script>
     $(document).ready(function(){
@@ -39,15 +39,22 @@
         $('#clean').click(function() {
             sigImage.clear();
         });
+        $('#clean2').click(function() {
+            sigImage.clear2();
+        });
+        $('#clean3').click(function() {
+            sigImage.clear3();
+        });
         $('#rt-left').click(function() {
-            sigImage.rotate(20);
+            sigImage.rotate(10);
         })
         $('#rt-right').click(function() {
-            sigImage.rotate(-20);
+            sigImage.rotate(-10);
         })
     });
 </script>
 </body>
+
 
 </html>
 
