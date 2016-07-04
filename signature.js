@@ -213,10 +213,10 @@
                 }
                 this.method = method;
             },
-            clear : function(){
+            clear: function() {
                 return this.clear2();
             },
-            clear1 : function() {
+            clear1: function() {
                 this.checkOriginal(0);
                 $img = $self.find('img');
                 $img[0].src = white2transparent($img[0], 1);
@@ -234,6 +234,11 @@
                 $img[0].src = white2transparent($img[0], 3);
                 this.source = $img[0].src;
             },
+            /**
+             * Rotates image with given anagle.
+             *
+             * @param angle
+             */
             rotate: function(angle) {
                 this.angle = this.angle + angle;
                 var canvas = document.createElement('canvas');
@@ -256,21 +261,28 @@
                 context.drawImage(current_image, -cx, -cy, w, h);
                 $img[0].src = canvas.toDataURL(IMAGE_TYPE);
             },
-            getCanvasData : function(type){
-                return this.source.replace('data:' + (type||IMAGE_TYPE) + ';base64,', '');
+            getCanvasData: function(type) {
+                return this.source.replace('data:' + (type || IMAGE_TYPE) + ';base64,', '');
             },
-            convertToBinary : function(_options){
+            /**
+             * This function converts dataUri string to binary data string
+             * dataUri is this.source
+             *
+             * @param _options { filename, fileparam, url }
+             * @returns {ArrayBuffer}
+             */
+            convertToBinary: function(_options) {
                 var options = _options || {};
                 options.type = options.type || IMAGE_TYPE;
-                options.fileparam =  options.fileparam || "file";
-                options.filename = options.filename || (new Date()).getTime()+"-"+(++COUNTER) + ".png";
+                options.fileparam = options.fileparam || "file";
+                options.filename = options.filename || (new Date()).getTime() + "-" + (++COUNTER) + ".png";
 
                 var canvasData = this.getCanvasData(options.type);
 
                 var boundary = options.boundary || BOUNDARY;
                 var dataList = [
                         '--' + boundary,
-                        'Content-Disposition: form-data; name="'+options.fileparam+'"; filename="' + options.filename + '"',
+                        'Content-Disposition: form-data; name="' + options.fileparam + '"; filename="' + options.filename + '"',
                         'Content-Type: ' + options.type,
                     '',
                     win.atob(canvasData)
@@ -280,44 +292,58 @@
 
                 options.data.filename = options.data.filename || options.filename;
 
-                for(var i in options.data){
+                for (var i in options.data) {
                     dataList.push(
                             '--' + boundary,
-                            'Content-Disposition: form-data; name="'+ i +'"',
+                            'Content-Disposition: form-data; name="' + i + '"',
                         '',
                         options.data[i]
                     );
                 }
                 dataList.push('--' + boundary + '--');
-                var bytes = Array.prototype.map.call( dataList.join('\r\n'), function(c) {
+                var bytes = Array.prototype.map.call(dataList.join('\r\n'), function(c) {
                     return c.charCodeAt(0) & 0xff;
                 });
                 return new win.Uint8Array(bytes).buffer;
             },
-            post : function(_options){
+            /**
+             * This function posts the image on provided url and returns promise, with done/then/notify
+             * You can use notify to track progress.
+             *
+             * @param options { filename, fileparam, url }
+             * @returns {*}
+             */
+            post: function(_options) {
                 var options = _options || {};
                 options.data = this.convertToBinary(options);
                 options.url = options.url || '/app/upload';
                 options.boundary = options.boundary || BOUNDARY;
                 return this.send(options);
             },
-            send : function(options) {
+            /**
+             * This function posts the image on provided url and returns promise, with done/then/notify
+             * You can use notify to track progress.
+             *
+             * @param options { data, url, boundary, filename, fileparam, url }
+             * @returns {*}
+             */
+            send: function(options) {
                 var $def = jq.Deferred();
                 var xhr = new win.XMLHttpRequest();
-                xhr.open("POST", options.url,true);
+                xhr.open("POST", options.url, true);
                 xhr.setRequestHeader(
                     'Content-Type', 'multipart/form-data; boundary=' + options.boundary);
                 xhr.addEventListener("load", function() {
                     switch (this.status) {
                         case 200: // request complete and successful
                             var data = JSON.parse(xhr.responseText);
-                            $def.resolve(data,options);
+                            $def.resolve(data, options);
                             break;
                         default: // request complete but with unexpected response
                             $def.reject({
-                                type: "error", code : this.status,
+                                type: "error", code: this.status,
                                 msg: "File was not uploaded due to unknown errors"
-                            },options);
+                            }, options);
                     }
                 }, false);
                 xhr.onreadystatechange = function() {
@@ -325,7 +351,7 @@
                         $def.reject({
                             type: "error",
                             msg: "File was not uploaded due to unknown errors"
-                        },options);
+                        }, options);
                     }
                 };
                 xhr.upload.addEventListener("progress", function(event) {
