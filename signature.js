@@ -187,7 +187,7 @@
             }
         }
         ctx.putImageData(imageData, 0, 0);
-        return c.toDataURL('image/png');
+        return c.toDataURL(IMAGE_TYPE);
     }
 
     win.signature = function($dom) {
